@@ -45,7 +45,7 @@ const rideSchema = new mongoose.Schema({
     {
         type: String
     },
-    OrderId:
+    orderId:
     {
         type: String
     },

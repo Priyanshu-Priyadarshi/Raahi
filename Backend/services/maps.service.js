@@ -47,6 +47,7 @@ module.exports.getDistanceTime = async (origin, destination) => {
       throw new Error("Unable to fetch distance and time");
     }
   } catch (err) {
+    console.error(err)
     throw err;
   }
 };
@@ -64,7 +65,7 @@ module.exports.getAutoCompleteSuggestions = async (input) => {
   try {
     const response = await axios.get(url);
     if (response.data.status === "OK") {
-      return response.data.predictions;
+      return response.data.predictions.map(prediction => prediction.description).filter(value => value);
     } else {
       throw new Error("Unable to fetch suggestions");
     }

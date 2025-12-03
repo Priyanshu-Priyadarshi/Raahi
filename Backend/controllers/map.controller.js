@@ -31,6 +31,7 @@ module.exports.getDistanceTime = async (req, res, next) => {
 
     res.status(200).json(distanceTime);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -48,6 +49,7 @@ module.exports.getAutoCompleteSuggestions = async (req, res, next) => {
 
     res.status(200).json(suggestions);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

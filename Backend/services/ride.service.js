@@ -49,12 +49,12 @@ module.exports.getFare = getFare;
 
 function getOtp(num) {
    
-    function gerenateOtp(num){
+    function generateOtp(num){
         const otp = crypto.randomInt(Math.pow(10, num - 1), Math.pow(10, num)).toString();
         return otp;
     }
 
-  return gerenateOtp(num);
+  return generateOtp(num);
 }
 
 
