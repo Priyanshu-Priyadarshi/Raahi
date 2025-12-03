@@ -9,27 +9,67 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
 import ConfirmRidePopUp from "../components/ConfirmRidePopUp";
-import { useEffect , useContext} from "react";
+import { useEffect, useContext } from "react";
 import { SocketContext } from "../context/SocketContext";
 import { CaptainDataContext } from "../context/CaptainContext";
 
 const CaptainHome = () => {
 
-  const [ridePopupPanel , setridePopupPanel ] = useState(true);
+  const [ridePopupPanel , setridePopupPanel ] = useState(false);
   const [ConfirmridePopupPanel , setConfirmridePopupPanel] = useState(false);
 
   const ridePopupPanelRef = useRef(null);
   const ConfirmridePopupPanelRef = useRef(null);
+  const [ride, setRide]= useState(null);
 
   const { socket } = useContext(SocketContext);
   const { captain } = useContext(CaptainDataContext);
 
    useEffect(() => {
-      socket.emit('join',{ 
-        userId:captain._id, 
-        userType:'captain'
-      });
+        socket.emit('join', {
+            userId: captain._id,
+            userType: 'captain'
+        })
+        const updateLocation = () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+
+
+                  console.log({
+                   
+                        userId: captain._id,
+                        location: {
+                            ltd: position.coords.latitude,
+                            lng: position.coords.longitude
+                        }
+                    })
+                  
+
+                    socket.emit('update-location-captain', {
+                        userId: captain._id,
+                        location: {
+                            ltd: position.coords.latitude,
+                            lng: position.coords.longitude
+                        }
+                    })
+                })
+            }
+        }
+
+        const locationInterval = setInterval(updateLocation, 10000)
+        updateLocation()
+
+        // return () => clearInterval(locationInterval)
+    },[])
+
+
+    socket.on('new-ride',(data)=>
+    {
+      console.log(data)
+     //setRide(data);
+      //setridePopupPanel(true);
     })
+    
 
   useGSAP(
     function () {
@@ -67,7 +107,7 @@ const CaptainHome = () => {
       <div className="fixed p-6 top-0 flex items-center justify-between w-screen">
         <img className="w-16" src={RaahiLogo}></img>
         <Link
-          to="/home"
+          to="/captain-home"
           className=" h-10 w-10 bg-white flex items-center justify-center rounded-full"
         >
           <i className="text-lg font-medium ri-logout-box-r-line"></i>
@@ -83,11 +123,15 @@ const CaptainHome = () => {
       <div className="h-2/5 p-6">
        <CaptainDetails />
       </div>
-      <div ref={ridePopupPanelRef} className="fixed w-full z-10 bottom-0 -translate-y-full bg-white px-3 py-10 pt-12">
-        <RidePopUp setridePopupPanel={setridePopupPanel} setConfirmridePopupPanel={setConfirmridePopupPanel} />
+      <div ref={ridePopupPanelRef} className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12">
+        <RidePopUp 
+        ride={ride}
+        setridePopupPanel={setridePopupPanel} setConfirmridePopupPanel={setConfirmridePopupPanel} />
       </div>
-      <div ref={ConfirmridePopupPanelRef} className="fixed w-full h-screen z-10 bottom-0 -translate-y-full bg-white px-3 py-10 pt-12">
-        <ConfirmRidePopUp setConfirmridePopupPanel={setConfirmridePopupPanel} setridePopupPanel={setridePopupPanel} />
+      <div ref={ConfirmridePopupPanelRef} className="fixed w-full h-screen z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12">
+        <ConfirmRidePopUp
+        ride={ride}
+        setConfirmridePopupPanel={setConfirmridePopupPanel} setridePopupPanel={setridePopupPanel} />
       </div>
     </div>
   );

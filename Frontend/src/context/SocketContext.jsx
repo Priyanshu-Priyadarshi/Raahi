@@ -17,14 +17,12 @@ const SocketProvider = ({ children }) => {
             console.log('Disconnected from server');
         });
 
-    
-
     }, []);
 
-      
+
 
     return (
-        <SocketContext.Provider value={{ socket  }}>
+        <SocketContext.Provider value={{ socket }}>
             {children}
         </SocketContext.Provider>
     );

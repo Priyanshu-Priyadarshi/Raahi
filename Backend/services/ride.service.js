@@ -12,7 +12,7 @@ async function getFare(pickup, destination) {
   const baseFare = {
     auto: 30,
     car: 50,
-    motorcycle: 8,
+    motorcycle: 20,
   };
 
   const perKmRate = {

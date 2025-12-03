@@ -17,7 +17,7 @@ module.exports.registerUser = async(req ,  res , next) =>
 
     if(isUserAlready)
     {
-        return res.status(400).json({errors: [{message : 'User already exists'}]});
+        return res.status(400).json({message: 'User already exist'});
     }
 
     const hashedPassword = await userModel.hashPassword(password);
@@ -51,7 +51,7 @@ module.exports.loginUser = async(req , res , next) =>
 
     if(!user)
     {
-        return res.status(401).json({message: 'Invalid email or passwod'});
+        return res.status(401).json({message: 'Invalid email or password'});
     }
 
     const isMatch = await user.comparePassword(password);
@@ -77,7 +77,7 @@ module.exports.logoutUser = async(req,res,next)=>
 {
     res.clearCookie('token');
 
-    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[ 1 ];
 
     await blackListTokenModel.create({token});
 

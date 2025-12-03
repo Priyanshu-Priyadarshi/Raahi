@@ -1,0 +1,5 @@
+- [x] Configure Vite proxy for backend and socket requests
+- [x] Update socket context to support proxy and same-origin usage
+- [x] Adjust environment configuration for frontend/backend URLs
+- [ ] Fix createRide to send response once after notifications
+- [ ] Replace ltd usage with lat consistently

@@ -16,7 +16,7 @@ module.exports.registerCaptain = async (req , res , next) =>
     const isCaptainAlreadyExist = await captainModel.findOne({ email });
 
     if (isCaptainAlreadyExist) {
-        return res.status(400).json({ errors: [{ message: 'Captain already exists' }] });
+        return res.status(400).json({ message: 'Captain already exist' });
     }
 
 
@@ -44,7 +44,7 @@ module.exports.loginCaptain = async (req,res,next) =>
 
     if(!errors.isEmpty())
     {
-        return res.status(400).json({errors:nerrors.array() });
+        return res.status(400).json({errors:errors.array() });
 
     }
 
@@ -81,9 +81,9 @@ module.exports.getCaptainProfile = async(req , res , next)=>
 
 module.exports.logoutCaptain = async(req , res , next) =>
 {
-    const token = req.cookies.token || req.header.authorization?.split(' ')[1];
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
-    await blackListTokenModel.create({ token : token });
+    await blackListTokenModel.create({ token });
 
     res.clearCookie('token');
 

@@ -56,24 +56,24 @@ const captainSchema = new mongoose.Schema({
       required: true,
       enum: ["car", "motorcycle", "auto"],
     },
-    location:
-    {
-        ltd:
-        {
-            type: Number,
-        },
-        lng:
-        {
-            type: Number,
-        }
-    }
+  },
+  location: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      default: "Point",
+    },
+    coordinates: {
+      type: [Number],
+      default: [0, 0], // [lng, lat]
+    },
   },
 });
 
 
 captainSchema.methods.generateAuthToken = function()
 {
-    const token = jwt.sign({_id: this.id}, process.env.JWT_SECRET, {expiresIn: '24h'});
+    const token = jwt.sign({_id: this._id}, process.env.JWT_SECRET, {expiresIn: '24h'});
     return token;
         
 }
@@ -88,6 +88,8 @@ captainSchema.statics.hashPassword = async function (password)
     return await bcrypt.hash(password,10);
 
 }
+
+
 
 const captainModel = mongoose.model('captain',captainSchema);
 
