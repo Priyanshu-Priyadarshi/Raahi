@@ -278,12 +278,21 @@ const Home = () => {
               placeholder="Enter your destination "
             />
           </form>
-          <button
-            onClick={findTrip}
-            className="mt-3 w-full rounded-lg bg-black px-4 py-2 text-white"
-          >
-            Find Trip
-          </button>
+          {panelOpen && (
+            <button
+              onClick={() => {
+                const hasPickup = pickup && pickup.trim().length > 0;
+                const hasDestination = destination && destination.trim().length > 0;
+                if (!hasPickup || !hasDestination) {
+                  return;
+                }
+                findTrip();
+              }}
+              className="mt-3 w-full rounded-lg bg-black px-4 py-2 text-white"
+            >
+              Find Trip
+            </button>
+          )}
         </div>
         <div ref={panelRef} className=" bg-white h-0">
           <LocationSearchPanel

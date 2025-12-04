@@ -7,10 +7,10 @@ import Captainlogin from "./pages/Captainlogin";
 import CaptainSignup from "./pages/CaptainSignup";
 import Home from "./pages/Home";
 import UserProtectWrapper from "./pages/UserProtectedWrapper";
-import { UserLogout } from "./pages/UserLogout";
+import UserLogout from "./pages/UserLogout";
 import CaptainHome from "./pages/CaptainHome.jsx";
 import CaptainProtectWrapper from "./pages/CaptainProtectWrapper.jsx";
-import { CaptainLogout } from "./pages/CaptainLogout.jsx";
+import CaptainLogout from "./pages/CaptainLogout.jsx";
 import Riding from "./components/Riding.jsx";
 import CaptainRiding from "./pages/CaptainRiding.jsx";
 

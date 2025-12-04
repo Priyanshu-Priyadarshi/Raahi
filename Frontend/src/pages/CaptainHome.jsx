@@ -66,8 +66,8 @@ const CaptainHome = () => {
     socket.on('new-ride',(data)=>
     {
       console.log(data)
-     //setRide(data);
-      //setridePopupPanel(true);
+     setRide(data);
+      setridePopupPanel(true);
     })
     
 
