@@ -47,7 +47,7 @@ const RidePopUp = (props) => {
             <i className="ri-currency-line"></i>
             <div>
               <h3 className="text-lg font-medium">Estimated Fare</h3>
-              <p className="text-sm -mt-1 text-gray-600">{props.ride?.fare}</p>
+              <p className="text-sm -mt-1 text-gray-600">₹{props.ride?.fare}</p>
             </div>
           </div>
         </div>

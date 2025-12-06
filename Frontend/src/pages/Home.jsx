@@ -12,6 +12,8 @@ import axios from "axios";
 import { SocketContext } from "../context/SocketContext";
 import { useContext } from "react";
 import { UserDataContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
+import LiveTracking from "../components/LiveTracking";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -35,13 +37,30 @@ const Home = () => {
   const [activeField, setActiveField] = useState(null);
   const [fare, setFare] = useState({});
   const [vehicleType, setVehicleType] = useState(null);
+  const [ride, setRide] = useState(null); 
 
+
+  const navigate = useNavigate();
   const { socket } = useContext(SocketContext);
   const {user}= useContext(UserDataContext);
 
   useEffect(() => {
     socket.emit('join',{userType:'user', userId:user._id});
   },[user])
+
+  socket.on('ride-confirmed', ride =>
+  {
+    setvehicleFound(false);
+    setwaitingForDriver(true);
+    setRide(ride);
+  }
+  )
+
+  socket.on('ride-started', ride =>
+  {
+    setwaitingForDriver(false);
+    navigate('/riding',{state:{ride}});
+  })
 
   const handlePickupChange = async (e) => {
     const value = e.target.value;
@@ -234,11 +253,7 @@ const Home = () => {
     <div className="relative h-screen overflow-hidden">
       <img className="w-16 absolute left-5 top-5 " src={RaahiLogo} alt="" />
       <div className="w-screen h-screen">
-        <img
-          className="h-full w-full object-cover"
-          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-          alt=""
-        />
+        <LiveTracking height="65vh" zoom={14} />
       </div>
       <div className="flex flex-col justify-end h-screen absolute top-0 w-full ">
         <div className="h-[30%] p-6 bg-white relative">
@@ -354,7 +369,11 @@ const Home = () => {
         ref={waitingForDriverRef}
         className="fixed w-full z-10 bottom-0 bg-white px-3 py-6 pt-12"
       >
-        <WaitingForDriver setwaitingForDriver={setwaitingForDriver} />
+        <WaitingForDriver 
+        ride={ride}
+        setvehicleFound={setvehicleFound}
+        setwaitingForDriver={setwaitingForDriver}
+        waitingForDriver={waitingForDriver} />
       </div>
     </div>
   );

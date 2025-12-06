@@ -28,6 +28,8 @@ router.get('/profile',authMiddleware.authCaptain,captainController.getCaptainPro
 
 router.get('/logout',authMiddleware.authCaptain, captainController.logoutCaptain);
 
+// Debug and migration endpoints removed for production cleanliness
+
 module.exports = router;
 
 

@@ -74,20 +74,21 @@ module.exports.getAutoCompleteSuggestions = async (input) => {
   }
 };
 
-module.exports.getCaptainsInTheRadius = async (ltd, lng, radius) => {
+module.exports.getCaptainsInTheRadius = async (ltd, lng, radiusKm) => {
+  // Validate inputs
+  if (typeof ltd !== 'number' || typeof lng !== 'number') return [];
+  if (ltd === 0 && lng === 0) return [];
 
-    // radius in km
+  const radiusMeters = Math.max(100, (radiusKm || 2) * 1000);
 
+  const captains = await captainModel.find({
+    location: {
+      $near: {
+        $geometry: { type: 'Point', coordinates: [lng, ltd] },
+        $maxDistance: radiusMeters
+      }
+    }
+  });
 
-    const captains = await captainModel.find({
-        location: {
-            $geoWithin: {
-                $centerSphere: [ [ ltd, lng ], radius / 6371 ]
-            }
-        }
-    });
-
-    return captains;
-
-
+  return captains;
 }
