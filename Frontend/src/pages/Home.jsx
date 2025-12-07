@@ -251,7 +251,7 @@ const Home = () => {
 
   return (
     <div className="relative h-screen overflow-hidden">
-      <img className="w-16 absolute left-5 top-5 " src={RaahiLogo} alt="" />
+      <img className="w-16 absolute left-5 top-5" src={RaahiLogo} alt="Raahi" />
       <div className="w-screen h-screen">
         <LiveTracking height="65vh" zoom={14} />
       </div>

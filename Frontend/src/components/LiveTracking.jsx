@@ -76,9 +76,6 @@ const LiveTracking = ({ initialCenter, height = '100%', zoom = 15 }) => {
                     Tips: Allow location permission; use HTTPS or `localhost`.
                 </div>
             )}
-            <div style={{ position: 'absolute', bottom: 8, left: 8, background: '#fff', padding: '6px 10px', borderRadius: 6, boxShadow: '0 2px 8px rgba(0,0,0,0.15)', fontSize: 12 }}>
-                Lat: {Number(currentPosition.lat).toFixed(6)} | Lng: {Number(currentPosition.lng).toFixed(6)}
-            </div>
         </LoadScript>
     );
 }
