@@ -1,10 +1,26 @@
-import React, {useContext, useMemo} from "react";
+import React, {useContext, useEffect, useMemo, useState} from "react";
+import axios from "axios";
 import {CaptainDataContext} from '../context/CaptainContext';
 
 const CaptainDetails = () =>
 {
 
   const { captain } = useContext(CaptainDataContext);
+  const [stats, setStats] = useState({ hoursOnline: 0, distanceTravelledKm: 0, totalFare: 0 });
+
+  useEffect(() => {
+    async function fetchStats() {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/captains/stats`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
+        setStats(res.data || { hoursOnline: 0, distanceTravelledKm: 0, totalFare: 0 });
+      } catch (e) {
+        // ignore errors; keep defaults
+      }
+    }
+    fetchStats();
+  }, []);
 
   const vehicleImage = useMemo(() => {
     const type = captain?.vehicle?.vehicleType;
@@ -29,16 +45,15 @@ const CaptainDetails = () =>
             />
             <h4 className="text-lg font-medium capitalize">{captain.fullname.firstname + " " + captain.fullname.lastname}</h4>
           </div>
-          <div className="flex flex-col items-start gap-1">
+          <div className="flex flex-col items-center gap-2">
             <img
               src={vehicleImage}
               alt="Vehicle"
-              className="h-16 w-24 object-contain "
+              className="h-16 w-24 object-contain"
             />
-            <h5 className="text-base font-semibold tracking-wide">
+            <h5 className="text-base font-semibold tracking-wide text-center">
               {captain?.vehicle?.plate || '—'}
             </h5>
-           
           </div>
         </div>
         
@@ -46,17 +61,17 @@ const CaptainDetails = () =>
         <div className="grid grid-cols-3 gap-3 p-3 mt-6 bg-gray-100 rounded-xl">
           <div className="text-center">
             <i className="text-2xl mb-1 ri-currency-line"></i>
-            <h5 className="text-lg font-semibold">₹513.64</h5>
+            <h5 className="text-lg font-semibold">₹{Math.round(stats.totalFare)}</h5>
             <p className="text-xs text-gray-600">Earned</p>
           </div>
           <div className="text-center">
             <i className="text-2xl mb-1 ri-roadster-line"></i>
-            <h5 className="text-lg font-semibold">12.4 km</h5>
+            <h5 className="text-lg font-semibold">{(stats.distanceTravelledKm || 0).toFixed(1)} km</h5>
             <p className="text-xs text-gray-600">Distance Travelled</p>
           </div>
           <div className="text-center">
             <i className="text-2xl mb-1 ri-timer-2-line"></i>
-            <h5 className="text-lg font-semibold">10.2 h</h5>
+            <h5 className="text-lg font-semibold">{(stats.hoursOnline || 0).toFixed(1)} h</h5>
             <p className="text-xs text-gray-600">Hours Online</p>
           </div>
         </div>

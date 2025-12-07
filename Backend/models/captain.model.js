@@ -57,6 +57,12 @@ const captainSchema = new mongoose.Schema({
       enum: ["car", "motorcycle", "auto"],
     },
   },
+  // Aggregated stats
+  stats: {
+    hoursOnline: { type: Number, default: 0 }, // hours
+    distanceTravelledKm: { type: Number, default: 0 }, // kilometers
+    totalFare: { type: Number, default: 0 } // currency units
+  },
   location: {
     type: {
       type: String,

@@ -27,6 +27,12 @@ const rideSchema = new mongoose.Schema({
         type: Number,
         required:true
     },
+    vehicleType:
+    {
+        type: String,
+        enum: ['car', 'motorcycle', 'auto'],
+        required: true
+    },
     status:
     {
         type: String,
@@ -37,9 +43,17 @@ const rideSchema = new mongoose.Schema({
     {
         type:Number
     },
+    durationText:
+    {
+        type:String
+    },
     distance:
     {
         type:Number
+    },
+    distanceText:
+    {
+        type:String
     },
     paymentID:
     {

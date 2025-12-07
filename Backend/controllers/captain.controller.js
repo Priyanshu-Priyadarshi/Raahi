@@ -89,3 +89,15 @@ module.exports.logoutCaptain = async(req , res , next) =>
 
     res.status(200).json({message : 'Logout successfully'});
 }
+
+module.exports.getCaptainStats = async (req, res) => {
+    try {
+        const captain = await captainModel.findById(req.captain._id).select('stats');
+        if (!captain) {
+            return res.status(404).json({ message: 'Captain not found' });
+        }
+        return res.status(200).json(captain.stats || { hoursOnline: 0, distanceTravelledKm: 0, totalFare: 0 });
+    } catch (err) {
+        return res.status(500).json({ message: err.message });
+    }
+}

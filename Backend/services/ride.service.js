@@ -45,7 +45,13 @@ async function getFare(pickup, destination) {
     ),
   };
 
-  return fare;
+  return {
+    ...fare,
+    durationText: distanceTime.duration?.text || "",
+    durationSeconds: distanceTime.duration?.value || 0,
+    distanceMeters: distanceTime.distance?.value || 0,
+    distanceText: distanceTime.distance?.text || "",
+  };
 }
 
 module.exports.getFare = getFare;
@@ -78,6 +84,13 @@ module.exports.createRide = async ({
     destination,
     otp: getOtp(6),
     fare: fare[vehicleType],
+    vehicleType,
+    // Persist numeric distance and duration for downstream UIs (captain popup)
+    distance: fare.distanceMeters,
+    duration: fare.durationSeconds,
+    // Persist human-readable labels to avoid client-side formatting
+    distanceText: fare.distanceText,
+    durationText: fare.durationText,
   });
   return ride;
 };
@@ -182,6 +195,27 @@ module.exports.endRide = async ({ rideId, captain }) => {
     }
   );
 
+  // Compute distance and time for this ride and update captain stats
+  try {
+    const distanceTime = await mapService.getDistanceTime(ride.pickup, ride.destination);
+    const distanceKm = (distanceTime?.distance?.value || 0) / 1000;
+    const durationHours = (distanceTime?.duration?.value || 0) / 3600;
+
+    // ride.fare holds the amount charged for selected vehicleType
+    const fareAmount = ride.fare || 0;
+
+    // Increment captain stats atomically
+    await ride.captain.updateOne({
+      $inc: {
+        'stats.distanceTravelledKm': distanceKm,
+        'stats.hoursOnline': durationHours,
+        'stats.totalFare': fareAmount,
+      }
+    });
+  } catch (e) {
+    // Log and continue; stats update should not block ride completion
+    console.error('Failed to update captain stats for ride', rideId, e?.message || e);
+  }
 
   return ride;
 };

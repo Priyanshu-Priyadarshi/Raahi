@@ -50,6 +50,20 @@ function initializeSocket(server) {
     socket.on("disconnect", () => {
       console.log(`Client disconnected: ${socket.id}`);
     });
+
+    // Relay user's payment action to the captain's device
+    socket.on("user-made-payment", async (data) => {
+      try {
+        const { captainId, rideId } = data || {};
+        if (!captainId) return;
+        const captain = await captainModel.findById(captainId).select("socketId");
+        if (captain?.socketId) {
+          io.to(captain.socketId).emit("user-made-payment", { rideId });
+        }
+      } catch (e) {
+        console.error("Failed to relay user-made-payment:", e?.message || e);
+      }
+    });
   });
 }
 

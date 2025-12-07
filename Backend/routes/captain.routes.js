@@ -28,6 +28,9 @@ router.get('/profile',authMiddleware.authCaptain,captainController.getCaptainPro
 
 router.get('/logout',authMiddleware.authCaptain, captainController.logoutCaptain);
 
+// Stats for authenticated captain
+router.get('/stats', authMiddleware.authCaptain, captainController.getCaptainStats);
+
 // Debug and migration endpoints removed for production cleanliness
 
 module.exports = router;

@@ -32,6 +32,10 @@ if(response.status === 200)
 
 }
   
+  // Compute labels from numeric fields populated on ride creation
+    const distanceText = props.ride?.distanceText || '';
+    const durationText = props.ride?.durationText || '';
+
   return (
     <div>
       <h5
@@ -54,12 +58,15 @@ if(response.status === 200)
           ></img>
           <h2 className="text-lg font-medium capitalize">{props.ride?.user.fullname.firstname + " " + props.ride?.user.fullname.lastname}</h2>
         </div>
-        <h5 className="text-lg font-semibold">2.2 KM</h5>
+        <div className="text-right">
+          <div className="text-sm font-semibold text-gray-700">Distance: {distanceText || '–'}</div>
+          <div className="text-sm font-semibold text-gray-700">Duration: {durationText || '–'}</div>
+        </div>
       </div>
       <div className="flex gap-2 justify-between flex-col items-center">
-        <div className="w-full mt-5">
-          <div className="flex items-center gap-5 p-3 border-b-2">
-            <i className="text-lg ri-map-pin-2-fill"></i>
+        <div className="w-full mt-2">
+          <div className="flex items-start gap-5 p-3 border-b-2">
+            <i className="text-lg ri-map-pin-2-fill mt-1"></i>
             <div>
               <h3 className="text-lg font-medium">Pickup</h3>
               <p className="text-sm -mt-1 text-gray-600">
@@ -67,8 +74,8 @@ if(response.status === 200)
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-5 p-3 border-b-2">
-            <i className="text-lg ri-map-pin-user-fill"></i>
+          <div className="flex items-start gap-5 p-3 border-b-2">
+            <i className="text-lg ri-map-pin-user-fill mt-1"></i>
             <div>
               <h3 className="text-lg font-medium">Destination</h3>
               <p className="text-sm -mt-1 text-gray-600">
@@ -76,20 +83,20 @@ if(response.status === 200)
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-5 p-3">
-            <i className="ri-currency-line"></i>
+          <div className="flex items-start gap-5 p-3">
+            <i className="ri-currency-line mt-1"></i>
             <div>
               <h3 className="text-lg font-medium">Estimated Fare</h3>
               <p className="text-sm -mt-1 text-gray-600">₹{props.ride?.fare}</p>
             </div>
           </div>
         </div>
-        <div className="mt-6 w-full">
+        <div className="mt-3 w-full">
           <form onSubmit={
             SubmitHandler}>
-            <input value={otp} onChange={(e)=>setotp(e.target.value)} type="text" className="bg-[#eee] px-6 py-4 font-mono text-lg rounded-lg w-full mt-3" placeholder="Enter OTP" />
+            <input value={otp} onChange={(e)=>setotp(e.target.value)} type="text" className="bg-[#eee] px-6 py-4 font-mono text-lg rounded-lg w-full mt-2" placeholder="Enter OTP" />
           <button
-            className="mt-5 w-full text-lg flex justify-center text-white font-semibold p-3 rounded-lg bg-green-600"
+            className="mt-3 w-full text-lg flex justify-center text-white font-semibold p-3 rounded-lg bg-green-600"
           >
             Confirm
           </button>

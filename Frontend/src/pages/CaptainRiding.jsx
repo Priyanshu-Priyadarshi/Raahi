@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import RaahiLogo from "../logos/Raahi.png";
 import { useGSAP } from "@gsap/react";
@@ -6,12 +6,15 @@ import gsap from "gsap";
 import FinishRide from "../components/FinishRide";
 import {useLocation} from 'react-router-dom';
 import LiveTracking from "../components/LiveTracking";
+import axios from "axios";
+import { SocketContext } from "../context/SocketContext";
 
 const CaptainRiding = () => {
   const [finishRidePanel, setFinishRidePanel] = useState(false);
   const finishRidePanelRef = useRef(null);
   const location = useLocation();
   const rideData = location.state?.ride;
+  const { socket } = useContext(SocketContext);
 
   useGSAP(
     function () {
@@ -27,6 +30,27 @@ const CaptainRiding = () => {
     },
     [finishRidePanel]
   );
+
+  useEffect(() => {
+    const onUserPayment = async (payload) => {
+      try {
+        const rideId = payload?.rideId || rideData?._id;
+        if (!rideId) return;
+        await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/end-ride`, { rideId }, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
+        // After successful completion, navigate handled in FinishRide or keep here? We'll keep captain here.
+        window.location.href = '/captain-home';
+      } catch (e) {
+        // silently ignore
+      }
+    };
+
+    socket?.on('user-made-payment', onUserPayment);
+    return () => {
+      socket?.off('user-made-payment', onUserPayment);
+    };
+  }, [socket, rideData?._id]);
 
   return (
     <div className="h-screen relative">
@@ -53,7 +77,21 @@ const CaptainRiding = () => {
         >
           <i className="text-3xl text-gray-800 ri-arrow-up-wide-line"></i>
         </h5>
-        <h4 className="text-xl font-semibold">4 KM away</h4>
+        <h4 className="text-xl font-semibold">
+          {(() => {
+            const distanceText = rideData?.distance?.text || rideData?.distanceText || "";
+            const durationText = rideData?.duration?.text || rideData?.durationText || "";
+            if (distanceText || durationText) {
+              return (
+                <span className="flex flex-col leading-tight">
+                  {distanceText && <span className="text-sm text-gray-800">Distance : {distanceText}</span>}
+                  {durationText && <span className="text-sm text-gray-800">Duration : {durationText}</span>}
+                </span>
+              );
+            }
+            return "";
+          })()}
+        </h4>
         <button className=" text-white font-semibold p-3 px-10 rounded-lg bg-green-600">
           Complete Ride
         </button>

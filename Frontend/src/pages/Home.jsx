@@ -371,6 +371,7 @@ const Home = () => {
       >
         <WaitingForDriver 
         ride={ride}
+        vehicleType={vehicleType}
         setvehicleFound={setvehicleFound}
         setwaitingForDriver={setwaitingForDriver}
         waitingForDriver={waitingForDriver} />
