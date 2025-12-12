@@ -33,6 +33,21 @@ const UserLogin = () =>
             setUser(data.user);
             localStorage.setItem('token' , data.token);
             navigate('/home');
+
+            // Log geolocation after user signs in
+            if (navigator && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const { latitude, longitude } = position.coords;
+                    console.log('User signed in - current location:', latitude, longitude);
+                }, (err) => {
+                    console.warn('Geolocation unavailable at sign-in:', err);
+                    if (navigator.permissions && navigator.permissions.query) {
+                        navigator.permissions.query({ name: 'geolocation' }).then((p) => {
+                            console.log('Geolocation permission state (sign-in):', p.state);
+                        }).catch((permErr) => console.warn('Permissions API error:', permErr));
+                    }
+                });
+            }
         }
 
         setEmail('');

@@ -31,6 +31,21 @@ const Captainlogin = () =>
             localStorage.setItem('token',data.token)
             navigate('/captain-home')
 
+            // Log captain geolocation after successful sign-in
+            if (navigator && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const { latitude, longitude } = position.coords;
+                    console.log('Captain signed in - current location:', latitude, longitude);
+                }, (err) => {
+                    console.warn('Geolocation unavailable at captain sign-in:', err);
+                    if (navigator.permissions && navigator.permissions.query) {
+                        navigator.permissions.query({ name: 'geolocation' }).then((p) => {
+                            console.log('Geolocation permission state (captain sign-in):', p.state);
+                        }).catch((permErr) => console.warn('Permissions API error:', permErr));
+                    }
+                });
+            }
+
 
           }
           setEmail('');

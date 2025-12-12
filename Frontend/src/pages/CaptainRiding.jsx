@@ -66,11 +66,7 @@ const CaptainRiding = () => {
       <div className="h-4/5">
         <LiveTracking />
       </div>
-      <div className="h-1/5 p-6 flex items-center relative justify-between bg-yellow-400 pt-10"
-      onClick={()=>
-      {
-        setFinishRidePanel(true)
-      }}>
+      <div className="h-1/5 p-6 flex items-center relative justify-between bg-yellow-400 pt-10">
         <h5
           className="p-1 text-center absolute w-[90%] top-0"
           onClick={() => {}}
@@ -92,7 +88,7 @@ const CaptainRiding = () => {
             return "";
           })()}
         </h4>
-        <button className=" text-white font-semibold p-3 px-10 rounded-lg bg-green-600">
+        <button onClick={() => setFinishRidePanel(true)} className=" text-white font-semibold p-3 px-10 rounded-lg bg-green-600">
           Complete Ride
         </button>
       </div>
