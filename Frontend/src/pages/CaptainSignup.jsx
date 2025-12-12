@@ -24,32 +24,53 @@ const CaptainSignup = () =>
     const { captain , setCaptain } = React.useContext(CaptainDataContext);
   
     const submitHandler = async(e) => {
-      e.preventDefault();
-  
-      const captainData = {
-        fullname: {
-          firstname: firstName,
-          lastname: lastName,
-        },
-        email: email,
-        password: password,
-        vehicle: {
-          color: vehicleColor,
-          plate: vehiclePlate,
-          capacity: vehicleCapacity,
-          vehicleType: vehicleType,
-        },
-      };
-    
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData);
+        e.preventDefault();
 
-      if(response.status === 201)
-      {
-        const data = response.data;
-        setCaptain(data.captain);
-        localStorage.setItem('token' , data.token);
-        navigate('/captain-home');
-      }
+        const captainData = {
+          fullname: {
+            firstname: firstName,
+            lastname: lastName,
+          },
+          email: email,
+          password: password,
+          vehicle: {
+            color: vehicleColor,
+            plate: vehiclePlate,
+            capacity: vehicleCapacity,
+            vehicleType: vehicleType,
+          },
+        };
+
+        // Try to get browser geolocation and include GeoJSON Point if available
+        const getCoords = () => new Promise((resolve) => {
+          if (!navigator || !navigator.geolocation) return resolve(null);
+          navigator.geolocation.getCurrentPosition((pos) => {
+            resolve([pos.coords.longitude, pos.coords.latitude]);
+          }, (err) => {
+            console.warn('Geolocation not available during signup:', err && err.message);
+            resolve(null);
+          }, { timeout: 5000 });
+        });
+
+        try {
+          const coords = await getCoords();
+          if (coords) {
+            captainData.location = { type: 'Point', coordinates: coords };
+          }
+
+          const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData);
+
+          if(response.status === 201)
+          {
+            const data = response.data;
+            setCaptain(data.captain);
+            localStorage.setItem('token' , data.token);
+            navigate('/captain-home');
+          }
+        } catch (err) {
+          console.error('Captain signup failed:', err);
+          alert('Registration failed. Check server logs and try again.');
+        }
 
     setEmail("");
     setFirstName("");
