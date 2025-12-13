@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api'
+import { LoadScript, GoogleMap, Marker, DirectionsService, DirectionsRenderer } from '@react-google-maps/api'
 
 const containerStyle = {
     width: '100%',
@@ -12,13 +12,18 @@ const center = {
     lng: 77.5945627
 };
 
-const LiveTracking = () => {
+const LiveTracking = (props) => {
+    const { pickup, destination } = props || {};
     const [ currentPosition, setCurrentPosition ] = useState(null);
     const [mapError, setMapError] = useState(false);
     const [trackingStarted, setTrackingStarted] = useState(false);
     const [permissionState, setPermissionState] = useState(null);
     const watchIdRef = useRef(null);
     const intervalRef = useRef(null);
+    const mapRef = useRef(null);
+    const [directions, setDirections] = useState(null);
+    const [directionsRequest, setDirectionsRequest] = useState(null);
+    const directionsRequestedRef = useRef(false);
 
     // Start geolocation tracking (called after a user gesture or when permission is already granted)
     const startTracking = () => {
@@ -79,6 +84,39 @@ const LiveTracking = () => {
     useEffect(() => {
         console.log('Current position state changed:', currentPosition);
     }, [currentPosition]);
+
+    // Handle route directions when pickup and destination are provided
+    useEffect(() => {
+        if (pickup && destination && !directionsRequestedRef.current) {
+            directionsRequestedRef.current = true;
+            setDirectionsRequest({
+                origin: pickup,
+                destination: destination,
+                travelMode: window.google?.maps?.TravelMode?.DRIVING || 'DRIVING'
+            });
+        } else if (!pickup || !destination) {
+            directionsRequestedRef.current = false;
+            setDirections(null);
+            setDirectionsRequest(null);
+        }
+    }, [pickup, destination]);
+
+    const directionsCallback = (result, status) => {
+        if (status === 'OK' && result) {
+            setDirections(result);
+            // Fit map to show entire route
+            if (mapRef.current && result.routes && result.routes[0]) {
+                const bounds = new window.google.maps.LatLngBounds();
+                result.routes[0].legs.forEach(leg => {
+                    bounds.extend(leg.start_location);
+                    bounds.extend(leg.end_location);
+                });
+                mapRef.current.fitBounds(bounds);
+            }
+        } else {
+            console.error('Directions request failed:', status);
+        }
+    };
     
 
     return (
@@ -95,9 +133,54 @@ const LiveTracking = () => {
                     <GoogleMap
                         mapContainerStyle={containerStyle}
                         center={currentPosition || center}
-                        zoom={15}
+                        zoom={directions ? 13 : 15}
+                        onLoad={(map) => {
+                            mapRef.current = map;
+                        }}
+                        options={{
+                            disableDefaultUI: false,
+                            zoomControl: true,
+                            streetViewControl: false,
+                            mapTypeControl: false,
+                            fullscreenControl: false
+                        }}
                     >
-                        {currentPosition && <Marker position={currentPosition} />}
+                        {directionsRequest && (
+                            <DirectionsService
+                                options={directionsRequest}
+                                callback={directionsCallback}
+                            />
+                        )}
+                        {directions && (
+                            <DirectionsRenderer
+                                directions={directions}
+                                options={{
+                                    suppressMarkers: true, // Hide default A/B markers
+                                    preserveViewport: false,
+                                    polylineOptions: {
+                                        strokeColor: '#3b82f6',
+                                        strokeWeight: 5,
+                                        strokeOpacity: 0.8,
+                                        icons: [{
+                                            icon: {
+                                                path: window.google?.maps?.SymbolPath?.FORWARD_CLOSED_ARROW,
+                                                scale: 4,
+                                                strokeColor: '#3b82f6',
+                                                strokeWeight: 2,
+                                                fillColor: '#3b82f6',
+                                                fillOpacity: 1
+                                            },
+                                            offset: '100%',
+                                            repeat: '80px'
+                                        }]
+                                    },
+                                    markerOptions: {
+                                        visible: true
+                                    }
+                                }}
+                            />
+                        )}
+                        {currentPosition && !directions && <Marker position={currentPosition} />}
                     </GoogleMap>
                 </div>
             )}

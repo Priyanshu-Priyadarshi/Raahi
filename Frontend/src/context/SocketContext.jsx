@@ -6,6 +6,7 @@ export const SocketContext = createContext();
 
 const socket = io(`${import.meta.env.VITE_BASE_URL}`); // Replace with your server URL
 
+
 const SocketProvider = ({ children }) => {
     useEffect(() => {
         // Basic connection logic
@@ -17,9 +18,9 @@ const SocketProvider = ({ children }) => {
             console.log('Disconnected from server');
         });
 
+        // Make socket globally available for imperative usage
+        window.socket = socket;
     }, []);
-
-
 
     return (
         <SocketContext.Provider value={{ socket }}>

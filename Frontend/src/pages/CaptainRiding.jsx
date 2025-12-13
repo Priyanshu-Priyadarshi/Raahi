@@ -64,7 +64,7 @@ const CaptainRiding = () => {
         </Link>
       </div>
       <div className="h-4/5">
-        <LiveTracking />
+        <LiveTracking pickup={rideData?.pickup} destination={rideData?.destination} />
       </div>
       <div className="h-1/5 p-6 flex items-center relative justify-between bg-yellow-400 pt-10">
         <h5

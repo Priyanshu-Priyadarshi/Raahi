@@ -126,15 +126,18 @@ const CaptainHome = () => {
 
   return (
     <div className="h-screen">
-      <div className="fixed p-6 top-0 flex items-center justify-between w-screen">
-        <img className="w-16" src={RaahiLogo}></img>
-        <Link
-          to="/captain-home"
-          className=" h-10 w-10 bg-white flex items-center justify-center rounded-full"
-        >
-          <i className="text-lg font-medium ri-logout-box-r-line"></i>
-        </Link>
-      </div>
+      {!(ridePopupPanel || ConfirmridePopupPanel) && (
+        <div className="fixed p-6 top-0 flex items-center justify-between w-screen z-50">
+          <img className="w-16" src={RaahiLogo} alt="Raahi Logo" />
+          <Link
+            to="/captain/logout"
+            className="h-12 w-12 bg-white flex items-center justify-center rounded-full shadow-lg border border-gray-200 hover:bg-gray-100 transition z-50"
+            style={{ right: 24, top: 24 }}
+          >
+            <i className="text-2xl font-medium ri-logout-box-r-line text-red-500"></i>
+          </Link>
+        </div>
+      )}
       <div className="h-3/5">
         <LiveTracking />
       </div>

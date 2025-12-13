@@ -92,24 +92,26 @@ if(response.status === 200)
           </div>
         </div>
         <div className="mt-3 w-full">
-          <form onSubmit={
-            SubmitHandler}>
+          <form onSubmit={SubmitHandler}>
             <input value={otp} onChange={(e)=>setotp(e.target.value)} type="text" className="bg-[#eee] px-6 py-4 font-mono text-lg rounded-lg w-full mt-2" placeholder="Enter OTP" />
-          <button
-            className="mt-3 w-full text-lg flex justify-center text-white font-semibold p-3 rounded-lg bg-green-600"
-          >
-            Confirm
-          </button>
-
-          <button
-            onClick={() => {
-              props.setConfirmridePopupPanel(false);
-              props.setridePopupPanel(false);
-            }}
-            className="mt-2 w-full text-white text-lg font-semibold p-3 rounded-lg bg-red-600"
-          >
-            Cancel
-          </button>
+            <div className="flex gap-3 mt-4">
+              <button
+                type="submit"
+                className="flex-1 text-lg flex justify-center text-white font-semibold p-3 rounded-lg bg-green-600"
+              >
+                Accept
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  props.setConfirmridePopupPanel(false);
+                  props.setridePopupPanel(false);
+                }}
+                className="flex-1 text-lg flex justify-center text-white font-semibold p-3 rounded-lg bg-red-600"
+              >
+                Cancel
+              </button>
+            </div>
           </form>
         </div>
       </div>

@@ -11,19 +11,18 @@ const Riding = () => {
   const { socket }= useContext(SocketContext);
   const navigate = useNavigate();
 
-  socket.on('ride-ended' , ()=>
-  {
-    navigate('/home');
-  })
+  useEffect(() => {
+    const handleRideEnded = (rideData) => {
+      // Show receipt page with ride and user info from backend event
+      navigate('/ride-receipt', { state: { ride: rideData, user: rideData?.user } });
+    };
+    socket.on('ride-ended', handleRideEnded);
+    return () => {
+      socket.off('ride-ended', handleRideEnded);
+    };
+  }, [socket, navigate]);
   
-  const handleMakePayment = () => {
-    try {
-      if (ride?.captain?._id && ride?._id) {
-        socket.emit('user-made-payment', { captainId: ride.captain._id, rideId: ride._id });
-      }
-    } catch {}
-    navigate('/home');
-  }
+  
 
   return (
     <div className="h-screen">
@@ -31,7 +30,7 @@ const Riding = () => {
         <i className="text-lg font-medium ri-home-5-line"></i>
       </Link>
       <div className="h-1/2">
-        <LiveTracking />
+        <LiveTracking pickup={ride?.pickup} destination={ride?.destination} />
       </div>
       <div className="h-1/2 p-4">
         <div className="flex items-center justify-between">
@@ -80,9 +79,21 @@ const Riding = () => {
             </div>
           </div>
         </div>
-        <button onClick={handleMakePayment} className="mt-5 w-full text-white font-semibold p-2 rounded-lg bg-green-600">
-          Make a Payment
-        </button>
+        <div className="mt-1 w-full">
+           <div className="mt-1 w-full flex justify-center">
+          <div className="bg-white shadow-lg rounded-xl px-3 py-1 flex flex-col items-center border border-gray-200 max-w-md w-full">
+            <div className="flex items-center mb-1">
+              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-green-100 mr-3">
+                <i className="ri-cash-line text-sm text-green-600"></i>
+              </span>
+              <span className="text-sm font-semibold text-green-700"> Please pay the fare amount directly to your captain at the end of the ride.</span>
+            </div>
+            
+            
+          </div>
+        </div>
+          
+          </div>
       </div>
     </div>
   );

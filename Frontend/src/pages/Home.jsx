@@ -249,9 +249,26 @@ const Home = () => {
     );
   }
 
+  // Determine if any overlay/panel is open, including LocationSearchPanel
+  const isOverlayOpen = vehiclePanel || confirmRidePanel || vehicleFound || waitingForDriver || panelOpen;
+
   return (
     <div className="relative h-screen overflow-hidden">
-      <img className="w-16 absolute left-5 top-5" src={RaahiLogo} alt="Raahi" />
+      {/* Show header only when overlays are not open */}
+      {!isOverlayOpen && (
+        <div className="fixed p-6 top-0 flex items-center justify-between w-screen z-50">
+          <img className="w-16" src={RaahiLogo} alt="Raahi Logo" />
+          <button
+            className="h-12 w-12 bg-white flex items-center justify-center rounded-full shadow-lg border border-gray-200 hover:bg-gray-100 transition z-50"
+            style={{ right: 24, top: 24 }}
+            onClick={() => {
+              navigate('/user/logout');
+            }}
+          >
+            <i className="text-2xl font-medium ri-logout-box-r-line text-red-500"></i>
+          </button>
+        </div>
+      )}
       <div className="w-screen h-screen">
         <LiveTracking height="65vh" zoom={14} />
       </div>

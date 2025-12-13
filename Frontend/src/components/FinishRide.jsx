@@ -7,10 +7,19 @@ import { useNavigate } from "react-router-dom";
 const FinishRide = (props) => {
 
   const navigate = useNavigate();
-  const [showCollectMsg, setShowCollectMsg] = useState(false);
-
-function requestPayment() {
-  setShowCollectMsg(true);
+async function requestPayment() {
+  // Call backend to end ride, which will emit socket event to user
+  if (props.rideData && props.rideData._id) {
+    try {
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/end-ride`, { rideId: props.rideData._id }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+    } catch (e) {
+      // Optionally show error
+    }
+  }
+  navigate('/captain-receipt', { state: { ride: props.rideData } });
+  if (props.setFinishRidePanel) props.setFinishRidePanel(false);
 }
 
   return (
@@ -68,16 +77,11 @@ function requestPayment() {
         </div>
         <div className="mt-6 w-full">
           <button
-          onClick={requestPayment}
+            onClick={requestPayment}
             className="mt-10 w-full flex text-lg justify-center text-white font-semibold p-3 rounded-lg bg-green-600"
           >
-            Finish Ride
+            Complete Ride
           </button>
-          {showCollectMsg && (
-            <div className="mt-4 w-full text-sm text-yellow-800 bg-yellow-100 border border-yellow-300 rounded-md p-3">
-              Please collect the fare from the rider.
-            </div>
-          )}
         </div>
       </div>
     </div>
