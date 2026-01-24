@@ -1,17 +1,47 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
+const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY;
 
 const RideReceipt = () => {
   const location = useLocation();
-
   const { ride, user } = location.state || {};
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!ride || !user) {
       navigate('/home');
     }
   }, [ride, user, navigate]);
+
+  const handleRazorpay = () => {
+    if (!window.Razorpay) {
+      alert("Razorpay SDK not loaded");
+      return;
+    }
+    const options = {
+      key: RAZORPAY_KEY,
+      amount: (ride?.fare || 0) * 100, // in paise
+      currency: "INR",
+      name: "Raahi Ride Payment",
+      description: `Payment for ride from ${ride?.pickup} to ${ride?.destination}`,
+      image: "/vite.svg",
+      handler: function (response) {
+        // Directly navigate to home on payment success
+        navigate("/home");
+      },
+      prefill: {
+        name: user?.fullname?.firstname || user?.name || "User",
+        email: user?.email || ""
+        // contact intentionally omitted so user must enter it
+      },
+      theme: {
+        color: "#10b981",
+      },
+    };
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
 
   return (
     <div>
@@ -44,12 +74,20 @@ const RideReceipt = () => {
           <span className="text-lg font-semibold text-gray-700">Total Fare</span>
           <span className="text-2xl font-bold text-green-700">₹{ride?.fare}</span>
         </div>
-        <button
-          className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl text-lg transition"
-          onClick={() => navigate("/home")}
-        >
-          Pay in Cash
-        </button>
+        <div className="flex flex-col gap-3">
+          <button
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl text-lg transition"
+            onClick={handleRazorpay}
+          >
+            Pay with Razorpay
+          </button>
+          <button
+            className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 rounded-xl text-lg transition"
+            onClick={() => navigate("/home")}
+          >
+            Pay in Cash
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,540 +1,188 @@
-# /users/register
+<div align="center">
+  <img src="Frontend/src/logos/Raahi.png" alt="Raahi Logo" width="120"/>
+  <h1>Raahi 🚕</h1>
+  <p><b>Modern, full-stack ride-hailing app with real-time tracking and dual user/captain flows.</b></p>
+  <p>
+    <a href="https://react.dev/" target="_blank"><img src="https://img.shields.io/badge/React-18-blue?logo=react"/></a>
+    <a href="https://nodejs.org/" target="_blank"><img src="https://img.shields.io/badge/Node.js-18-green?logo=node.js"/></a>
+    <a href="https://expressjs.com/" target="_blank"><img src="https://img.shields.io/badge/Express.js-5.1.0-black?logo=express"/></a>
+    <a href="https://www.mongodb.com/" target="_blank"><img src="https://img.shields.io/badge/MongoDB-6.0-green?logo=mongodb"/></a>
+    <a href="https://socket.io/" target="_blank"><img src="https://img.shields.io/badge/Socket.io-4.8.1-black?logo=socket.io"/></a>
+    <a href="https://tailwindcss.com/" target="_blank"><img src="https://img.shields.io/badge/TailwindCSS-3-blue?logo=tailwindcss"/></a>
+  </p>
 
-Description
-
-- Endpoint to create/register a new user account.
-- Route: POST /users/register (assumes router is mounted at `/users`).
-
-Headers
-
-- Content-Type: application/json
-
-Request body (JSON)
-
-- fullname (object)
-  - firstname (string, required) — minimum 3 characters
-  - lastname (string, optional) — minimum 3 characters if provided
-- email (string, required) — must be a valid email
-- password (string, required) — minimum 6 characters
-
-Example request
-
-{
-  "fullname": {
-    "firstname": "John",
-    "lastname": "Doe"
-  },
-  "email": "john@example.com",
-  "password": "secret123"
-}
-
-Validation rules implemented
-
-- email: must be a valid email (express-validator .isEmail())
-- fullname.firstname: minimum length 3 (express-validator .isLength({min:3}))
-- password: minimum length 6 (express-validator .isLength({min:6}))
-
-Responses
-
-Success (201 Created)
-
-- Description: user created and a JWT auth token is returned.
-- Body: JSON with `token` and `user` object (user object will not include the password field).
-
-Example success response (201)
-
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "_id": "64f1a2b3c4d5e6f7890abcdef",
-    "fullname": {
-      "firstname": "John",
-      "lastname": "Doe"
-    },
-    "email": "john@example.com",
-    "socketId": null,
-    "__v": 0
-  }
-}
-
-Client error (400 Bad Request)
-
-- Occurs when validation fails. Response body contains an `errors` array from `express-validator`.
-
-Example validation error response (400)
-
-{
-  "errors": [
-    {
-      "msg": "Invalid Email",
-      "param": "email",
-      "location": "body",
-      "value": "not-an-email"
-    }
-  ]
-}
-
-Server error (500 Internal Server Error)
-
-- Occurs for unexpected failures (database errors, missing environment variables, etc.).
-
-Example server error response (500)
-
-{
-  "error": "Internal Server Error"
-}
-
-Notes
-
-- Passwords are hashed before being saved (see model/service).
-- The returned `user` object will typically omit the password field (schema has `select:false`).
-- Ensure `JWT_SECRET` is set in environment variables so token generation works.
+</div>
 
 ---
 
-# /users/login
+## 🚦 Demo
 
-Description
-
-- Endpoint to authenticate a user and return a JWT token.
-- Route: POST /users/login (assumes router is mounted at `/users`).
-
-Headers
-
-- Content-Type: application/json
-
-Request body (JSON)
-
-- email (string, required) — must be a valid email
-- password (string, required) — minimum 6 characters
-
-Example request
-
-{
-  "email": "john@example.com",
-  "password": "secret123"
-}
-
-Validation rules implemented
-
-- email: must be a valid email (express-validator .isEmail())
-- password: minimum length 6 (express-validator .isLength({min:6}))
-
-Responses
-
-Success (200 OK)
-
-- Description: user authenticated and a JWT auth token is returned.
-- Body: JSON with `token` and `user` object (user object will not include the password field).
-
-Example success response (200)
-
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "_id": "64f1a2b3c4d5e6f7890abcdef",
-    "fullname": {
-      "firstname": "John",
-      "lastname": "Doe"
-    },
-    "email": "john@example.com",
-    "socketId": null,
-    "__v": 0
-  }
-}
-
-Client error (400 Bad Request)
-
-- Occurs when validation fails. Response body contains an `errors` array from `express-validator`.
-
-Example validation error response (400)
-
-{
-  "errors": [
-    {
-      "msg": "Invalid Email",
-      "param": "email",
-      "location": "body",
-      "value": "not-an-email"
-    }
-  ]
-}
-
-Unauthorized (401 Unauthorized)
-
-- Occurs when email or password is incorrect.
-
-Example unauthorized response (401)
-
-{
-  "message": "Invalid email or password"
-}
-
-Server error (500 Internal Server Error)
-
-- Occurs for unexpected failures (database errors, missing environment variables, etc.).
-
-Example server error response (500)
-
-{
-  "error": "Internal Server Error"
-}
+> <b>Local:</b> Visit http://localhost:5173 after setup (see below)
 
 ---
 
-# /users/profile
+## ✨ Features
+- 🔐 Dual flows: User (rider) & Captain (driver)
+- 🔑 Authentication & protected routes
+- 🚗 Real-time ride requests, acceptance, and live tracking (Socket.io)
+- 🏁 Ride status management (waiting, riding, finished)
+- 👤 Profile management for both users and captains
+- 🧾 Receipts and ride history
+- 🎨 Modern, responsive UI (Tailwind CSS)
 
-Description
+## 🛠️ Tech Stack
+- <b>Frontend:</b> React 18, Vite, Tailwind CSS
+- <b>Backend:</b> Node.js 18, Express.js 5, MongoDB (Mongoose), Socket.io
+- <b>Other:</b> Axios, JWT, bcrypt, dotenv
 
-- Endpoint to get the authenticated user's profile information.
-- Route: GET /users/profile (assumes router is mounted at `/users`).
-- Requires authentication (JWT token in cookie or Authorization header).
+## 📁 Project Structure
 
-Headers
+```
+Uber/
+├── Backend/
+│   ├── app.js
+│   ├── server.js
+│   ├── socket.js
+│   ├── controllers/
+│   ├── db/
+│   ├── middlewares/
+│   ├── models/
+│   ├── routes/
+│   └── services/
+├── Frontend/
+│   ├── index.html
+│   ├── package.json
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── logos/
+│   │   ├── pages/
+│   │   └── ...
+│   └── ...
+├── README.md
+└── ...
+```
 
-- Content-Type: application/json
-- Authorization: Bearer <token> (if not using cookies)
+## 🚀 Getting Started
 
-Request
+## 📝 Step-by-step Setup
 
-- No body required. JWT token must be sent in cookie or Authorization header.
+### Prerequisites
+- Node.js (v16+ recommended)
+- npm or yarn
+- MongoDB (local or Atlas)
 
-Responses
+### 1. Clone the repository
+```bash
+git clone <repo-url>
+cd Uber
+```
 
-Success (200 OK)
+### 2. Backend Setup
+```bash
+cd Backend
+npm install
+```
+Create a `.env` file in `Backend/`:
+```env
+GOOGLE_MAPS_API=your_GOOGLE_MAPS_API
+DB_CONNECT=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+PORT=4000
+```
+Start the backend:
+```bash
+npm start
+```
 
-- Description: Returns the user object for the authenticated user.
-- Body: JSON user object (password field omitted).
+### 3. Frontend Setup
+```bash
+cd ../Frontend
+npm install
+```
+Create a `.env` file in `Frontend/`:
+```env
+VITE_BASE_URL=http://localhost:4000
+VITE_GOOGLE_MAPS_API_KEY=your_GOOGLE_MAPS_API_KEY
+VITE_CONTACT_EMAIL=email_id
+```
+Start the frontend:
+```bash
+npm run dev
+```
 
-Example success response (200)
+## ⚙️ Environment Variables
+See above for required `.env` variables for both backend and frontend.
 
-{
-  "_id": "64f1a2b3c4d5e6f7890abcdef",
-  "fullname": {
-    "firstname": "John",
-    "lastname": "Doe"
-  },
-  "email": "john@example.com",
-  "socketId": null,
-  "__v": 0
-}
+## 🏁 Running the App
+- Backend: `npm start` (http://localhost:4000)
+- Frontend: `npm run dev` (http://localhost:5173)
+- Visit [http://localhost:5173](http://localhost:5173) in your browser.
 
-Unauthorized (401 Unauthorized)
+## 🧭 Key Functionality
 
-- Occurs if token is missing or invalid.
+## 👤 User Flow
 
-Example unauthorized response (401)
+- Register/login
+- Request a ride
+- Track ride in real-time
+- View ride receipt
 
-{
-  "message": "unauthorized"
-}
+## 🚕 Captain Flow
+
+- Register/login
+- Accept rides
+- Live tracking
+- Finish ride
+- View earnings
+
+## 🔄 Real-Time
+
+- Socket.io for live ride status and location updates
+
+## 🎨 Customization
+- Update branding/logos in `Frontend/src/logos/`
+- Edit styles in Tailwind config or component CSS
+- Add new features in `Backend/services/` and `Frontend/src/components/`
+
+### How to Contribute
+1. Fork the repo
+2. Create your feature branch (`git checkout -b feature/YourFeature`)
+3. Commit your changes (`git commit -am 'Add new feature'`)
+4. Push to the branch (`git push origin feature/YourFeature`)
+5. Open a Pull Request
 
 ---
 
-# /users/logout
+## 📚 API Overview
 
-Description
+> See the Backend/controllers and Backend/routes folders for detailed REST API endpoints for users, captains, and rides. Example endpoints:
 
-- Endpoint to log out the authenticated user.
-- Route: POST /users/logout (assumes router is mounted at `/users`).
-- Requires authentication (JWT token in cookie or Authorization header).
-
-Headers
-
-- Content-Type: application/json
-- Authorization: Bearer <token> (if not using cookies)
-
-Request
-
-- No body required. JWT token must be sent in cookie or Authorization header.
-
-Responses
-
-Success (200 OK)
-
-- Description: Logs out the user by clearing the token cookie and blacklisting the token.
-- Body: JSON message confirming logout.
-
-Example success response (200)
-
-{
-  "message": "Logged out"
-}
-
-Unauthorized (401 Unauthorized)
-
-- Occurs if token is missing or invalid.
-
-Example unauthorized response (401)
-
-{
-  "message": "unauthorized"
-}
+| Endpoint                | Method | Description                       |
+|-------------------------|--------|-----------------------------------|
+| /users/register         | POST   | Register a new user               |
+| /users/login            | POST   | User login                        |
+| /users/profile          | GET    | Get user profile (auth required)  |
+| /users/logout           | POST   | Logout user (auth required)       |
+| /captains/register      | POST   | Register a new captain            |
+| /captains/login         | POST   | Captain login                     |
+| /captains/profile       | GET    | Get captain profile (auth req.)   |
+| /captains/logout        | GET    | Logout captain (auth required)    |
+| /rides/get-fare         | GET    | Get estimated fare (auth req.)    |
 
 ---
 
-# /captains/register
+## 💡 Tips & FAQ
 
-Description
-
-- Register a new captain (driver) with vehicle details.
-- Route: POST /captains/register
-
-Request body (JSON)
-
-```jsonc
-{
-  "fullname": {
-    "firstname": "Alex", // required, min 3 chars
-    "lastname": "Smith" // optional, min 3 chars if provided
-  },
-  "email": "alex@captain.com", // required, valid email
-  "password": "captainpass", // required, min 6 chars
-  "vehicle": {
-    "color": "Red", // required, min 3 chars
-    "plate": "ABC123", // required, min 3 chars
-    "capacity": 4, // required, integer >= 1
-    "vehicleType": "car" // required, one of: 'car', 'motorcycle', 'auto'
-  }
-}
-```
-
-Example success response (201)
-
-```jsonc
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", // JWT token
-  "captain": {
-    "_id": "65f1a2b3c4d5e6f7890abcdef",
-    "fullname": {
-      "firstname": "Alex",
-      "lastname": "Smith"
-    },
-    "email": "alex@captain.com",
-    "vehicle": {
-      "color": "Red",
-      "plate": "ABC123",
-      "capacity": 4,
-      "vehicleType": "car"
-    },
-    "__v": 0
-  }
-}
-```
-
-Example error response (400)
-
-```jsonc
-{
-  "errors": [
-    {
-      "msg": "Invalid Email", // validation error
-      "param": "email",
-      "location": "body",
-      "value": "not-an-email"
-    },
-    {
-      "message": "Captain already exists" // duplicate email error
-    }
-  ]
-}
-```
+- Use different browsers or incognito mode to test user and captain flows simultaneously.
+- MongoDB Atlas is recommended for easy cloud DB setup.
+- For real-time features, ensure both backend and frontend are running.
+- Customize the UI by editing Tailwind classes in components.
 
 ---
 
-# /captains/login
+<div align="center">
+  <b>Made by Priyanshu Priyadarshi</b>
+</div>
 
-Description
-
-- Authenticate a captain and return a JWT token.
-- Route: POST /captains/login
-
-Request body (JSON)
-
-```jsonc
-{
-  "email": "alex@captain.com", // required, valid email
-  "password": "captainpass" // required, min 6 chars
-}
-```
-
-Example success response (200)
-
-```jsonc
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...", // JWT token
-  "captain": {
-    "_id": "65f1a2b3c4d5e6f7890abcdef",
-    "fullname": {
-      "firstname": "Alex",
-      "lastname": "Smith"
-    },
-    "email": "alex@captain.com",
-    "vehicle": {
-      "color": "Red",
-      "plate": "ABC123",
-      "capacity": 4,
-      "vehicleType": "car"
-    },
-    "__v": 0
-  }
-}
-```
-
-Example error response (400/401)
-
-```jsonc
-{
-  "errors": [
-    {
-      "msg": "Invalid Email", // validation error
-      "param": "email",
-      "location": "body",
-      "value": "not-an-email"
-    }
-  ]
-}
-
-{
-  "message": "Invalid email or password" // authentication error
-}
-```
-
----
-
-# /captains/profile
-
-Description
-
-- Get the authenticated captain's profile.
-- Route: GET /captains/profile
-- Requires JWT token (cookie or Authorization header)
-
-Example success response (200)
-
-```jsonc
-{
-  "captain": {
-    "_id": "65f1a2b3c4d5e6f7890abcdef",
-    "fullname": {
-      "firstname": "Alex",
-      "lastname": "Smith"
-    },
-    "email": "alex@captain.com",
-    "vehicle": {
-      "color": "Red",
-      "plate": "ABC123",
-      "capacity": 4,
-      "vehicleType": "car"
-    },
-    "__v": 0
-  }
-}
-```
-
-Example unauthorized response (401)
-
-```jsonc
-{
-  "message": "unauthorized" // missing or invalid token
-}
-```
-
----
-
-# /captains/logout
-
-Description
-
-- Logout the authenticated captain and blacklist the token.
-- Route: GET /captains/logout
-- Requires JWT token (cookie or Authorization header)
-
-Example success response (200)
-
-```jsonc
-{
-  "message": "Logout successfully" // logout confirmation
-}
-```
-
-Example unauthorized response (401)
-
-```jsonc
-{
-  "message": "unauthorized" // missing or invalid token
-}
-```
-
-
-# /rides/get-fare
-
-Description
-
-- Calculate estimated fare for a trip based on pickup and destination using Google Distance Matrix.
-- Route: GET /rides/get-fare (assumes router is mounted at `/rides`).
-- Requires authentication (JWT token in cookie or Authorization header).
-
-Headers
-
-- Content-Type: application/json
-- Authorization: Bearer <token> (if not using cookies)
-
-Query parameters
-
-- pickup (string, required, min length 3) — pickup address
-- destination (string, required, min length 3) — destination address
-
-Example request
-
-```http
-GET /rides/get-fare?pickup=MG%20Road%20Bengaluru&destination=Indiranagar%20Bengaluru HTTP/1.1
-Authorization: Bearer <token>
-```
-
-Example success response (200)
-
-```jsonc
-{
-  "auto": 75.5,
-  "car": 120.75,
-  "motorcycle": 45.25
-}
-```
-
-Validation error (400 Bad Request)
-
-- Occurs when validation fails.
-
-```jsonc
-{
-  "errors": [
-    {
-      "msg": "Invalid pickup address",
-      "param": "pickup",
-      "location": "query",
-      "value": "ab"
-    }
-  ]
-}
-```
-
-Unauthorized (401 Unauthorized)
-
-- Occurs when token is missing or invalid (from `authUser` middleware).
-
-```jsonc
-{
-  "message": "unauthorized"
-}
-```
-
-Server error (500 Internal Server Error)
-
-- Occurs if distance/time cannot be fetched or another unexpected error happens.
-
-```jsonc
-{
-  "message": "Internal server error"
-}
-```

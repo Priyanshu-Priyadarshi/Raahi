@@ -58,6 +58,7 @@ const Riding = () => {
           
           </div>
         </div>
+        {/* End of .flex items-center justify-between */}
 
         <div className="flex gap-2 justify-between flex-col items-center">
           <div className="w-full mt-5">
@@ -77,23 +78,28 @@ const Riding = () => {
                 <p className="text-sm -mt-1 text-gray-600">₹{ride?.fare}</p>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="mt-1 w-full">
-           <div className="mt-1 w-full flex justify-center">
-          <div className="bg-white shadow-lg rounded-xl px-3 py-1 flex flex-col items-center border border-gray-200 max-w-md w-full">
-            <div className="flex items-center mb-1">
-              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-green-100 mr-3">
-                <i className="ri-cash-line text-sm text-green-600"></i>
-              </span>
-              <span className="text-sm font-semibold text-green-700"> Please pay the fare amount directly to your captain at the end of the ride.</span>
+            <div className="flex justify-between items-center gap-5 p-3 border-b-2">
+              <div className="flex flex-col items-start">
+                <div className="flex items-center gap-2">
+                  <i className="ri-roadster-line text-lg"></i>
+                  <h3 className="text-lg font-medium">Distance</h3>
+                </div>
+                <p className="text-sm text-gray-600 ml-7 mt-0.5">
+                  {ride?.distance ? `${(ride.distance / 1000).toFixed(1)} km` : 'N/A'}
+                </p>
+              </div>
+              <div className="flex flex-col items-end">
+                <div className="flex items-center gap-2 justify-end">
+                  <i className="ri-timer-line text-lg"></i>
+                  <h3 className="text-lg font-medium">Duration</h3>
+                </div>
+                <p className="text-sm text-gray-600 mt-0.5">
+                  {ride?.duration ? `${Math.round(ride.duration / 60)} min` : 'N/A'}
+                </p>
+              </div>
             </div>
-            
-            
           </div>
         </div>
-          
-          </div>
       </div>
     </div>
   );
