@@ -1,6 +1,6 @@
 <div align="center">
   <img src="Frontend/src/logos/Raahi.png" alt="Raahi Logo" width="120"/>
-  <h1>Raahi - Uber Clone 🚕</h1>
+  <h1>Raahi 🚕</h1>
   <p><b>Modern, full-stack ride-hailing app with real-time tracking and dual user/captain flows.</b></p>
   <p>
     <img src="https://img.shields.io/badge/React-18-blue?logo=react"/>
@@ -10,13 +10,7 @@
     <img src="https://img.shields.io/badge/Socket.io-4.8.1-black?logo=socket.io"/>
     <img src="https://img.shields.io/badge/TailwindCSS-3-blue?logo=tailwindcss"/>
   </p>
-  <p>
-    <a href="#demo">Live Demo</a> •
-    <a href="#features">Features</a> •
-    <a href="#getting-started">Getting Started</a> •
-    <a href="#api-overview">API Overview</a> •
-    <a href="#contributing">Contribute</a>
-  </p>
+
 </div>
 
 ---
@@ -93,9 +87,10 @@ npm install
 ```
 Create a `.env` file in `Backend/`:
 ```env
-MONGO_URI=your_mongodb_uri
+GOOGLE_MAPS_API=your_GOOGLE_MAPS_API
+DB_CONNECT=your_mongodb_uri
 JWT_SECRET=your_jwt_secret
-PORT=5000
+PORT=4000
 ```
 Start the backend:
 ```bash
@@ -109,7 +104,9 @@ npm install
 ```
 Create a `.env` file in `Frontend/`:
 ```env
-VITE_BASE_URL=http://localhost:5000
+VITE_BASE_URL=http://localhost:4000
+VITE_GOOGLE_MAPS_API_KEY:your_GOOGLE_MAPS_API_KEY
+VITE_CONTACT_EMAIL
 ```
 Start the frontend:
 ```bash
@@ -120,7 +117,7 @@ npm run dev
 See above for required `.env` variables for both backend and frontend.
 
 ## 🏁 Running the App
-- Backend: `npm start` (http://localhost:5000)
+- Backend: `npm start` (http://localhost:4000)
 - Frontend: `npm run dev` (http://localhost:5173)
 - Visit [http://localhost:5173](http://localhost:5173) in your browser.
 
@@ -147,18 +144,12 @@ See above for required `.env` variables for both backend and frontend.
 - Edit styles in Tailwind config or component CSS
 - Add new features in `Backend/services/` and `Frontend/src/components/`
 
-## 🤝 Contributing
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
-
 ### How to Contribute
 1. Fork the repo
 2. Create your feature branch (`git checkout -b feature/YourFeature`)
 3. Commit your changes (`git commit -am 'Add new feature'`)
 4. Push to the branch (`git push origin feature/YourFeature`)
 5. Open a Pull Request
-
-## 📄 License
-[MIT](LICENSE)
 
 ---
 
@@ -190,6 +181,6 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 ---
 
 <div align="center">
-  <b>Made with ❤️ by the Raahi Team</b>
+  <b>Made with Priyanshu Priyadarshi</b>
 </div>
 
