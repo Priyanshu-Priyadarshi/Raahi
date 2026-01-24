@@ -14,6 +14,7 @@ import { useContext } from "react";
 import { UserDataContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import LiveTracking from "../components/LiveTracking";
+import UserNavbar from "../components/navigationbar/User/UserNavbar";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -38,6 +39,8 @@ const Home = () => {
   const [fare, setFare] = useState({});
   const [vehicleType, setVehicleType] = useState(null);
   const [ride, setRide] = useState(null); 
+  const [ridePopupPanel, setRidePopupPanel] = useState(false);
+  const [ConfirmridePopupPanel, setConfirmridePopupPanel] = useState(false);
 
 
   const navigate = useNavigate();
@@ -258,15 +261,6 @@ const Home = () => {
       {!isOverlayOpen && (
         <div className="fixed p-6 top-0 flex items-center justify-between w-screen z-50">
           <img className="w-16" src={RaahiLogo} alt="Raahi Logo" />
-          <button
-            className="h-12 w-12 bg-white flex items-center justify-center rounded-full shadow-lg border border-gray-200 hover:bg-gray-100 transition z-50"
-            style={{ right: 24, top: 24 }}
-            onClick={() => {
-              navigate('/user/logout');
-            }}
-          >
-            <i className="text-2xl font-medium ri-logout-box-r-line text-red-500"></i>
-          </button>
         </div>
       )}
       <div className="w-screen h-screen">
@@ -393,6 +387,7 @@ const Home = () => {
         setwaitingForDriver={setwaitingForDriver}
         waitingForDriver={waitingForDriver} />
       </div>
+      {!isOverlayOpen && <UserNavbar />}
     </div>
   );
 };

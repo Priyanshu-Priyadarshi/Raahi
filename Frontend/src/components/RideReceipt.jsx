@@ -48,7 +48,7 @@ const RideReceipt = () => {
           className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl text-lg transition"
           onClick={() => navigate("/home")}
         >
-          Pay in Cash &amp; Go to Home
+          Pay in Cash
         </button>
       </div>
     </div>

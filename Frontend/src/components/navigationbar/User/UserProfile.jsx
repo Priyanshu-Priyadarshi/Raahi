@@ -3,6 +3,7 @@ import { UserDataContext } from "../../../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import RaahiLogo from "../../../logos/Raahi.png";
 import axios from "axios";
+import UserLogo from '../../../logos/user_logo.jpg';
 
 const UserProfile = () => {
   const { user, setUser } = useContext(UserDataContext);
@@ -52,7 +53,7 @@ const UserProfile = () => {
           <h1 className="text-4xl font-extrabold mb-6 text-blue-800 tracking-tight drop-shadow">Profile Info</h1>
           <div className="transition-transform duration-200 hover:scale-105 hover:shadow-xl rounded-full border-4 border-blue-200 bg-gradient-to-tr from-blue-100 to-purple-100 p-1">
             <img
-              src={user?.avatar || "https://i.pravatar.cc/120?img=12"}
+              src={user?.avatar || UserLogo}
               alt="Profile"
               className="w-24 h-24 rounded-full object-cover shadow-md"
             />

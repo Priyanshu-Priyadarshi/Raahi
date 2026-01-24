@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import RaahiLogo from "../logos/Raahi.png";
+import RaahiLogo from "../logos/t2.png";
 import CaptainDetails from "../components/CaptainDetails";
 import RidePopUp from "../components/RidePopUp";
 import { useState } from "react";
@@ -14,6 +14,7 @@ import { SocketContext } from "../context/SocketContext";
 import { CaptainDataContext } from "../context/CaptainContext";
 import axios from "axios";
 import LiveTracking from "../components/LiveTracking";
+import CaptainNavbar from "../components/navigationbar/Captain/CaptainNavBar";
 
 const CaptainHome = () => {
 
@@ -127,16 +128,7 @@ const CaptainHome = () => {
   return (
     <div className="h-screen">
       {!(ridePopupPanel || ConfirmridePopupPanel) && (
-        <div className="fixed p-6 top-0 flex items-center justify-between w-screen z-50">
-          <img className="w-16" src={RaahiLogo} alt="Raahi Logo" />
-          <Link
-            to="/captain/logout"
-            className="h-12 w-12 bg-white flex items-center justify-center rounded-full shadow-lg border border-gray-200 hover:bg-gray-100 transition z-50"
-            style={{ right: 24, top: 24 }}
-          >
-            <i className="text-2xl font-medium ri-logout-box-r-line text-red-500"></i>
-          </Link>
-        </div>
+        <CaptainNavbar />
       )}
       <div className="h-3/5">
         <LiveTracking />

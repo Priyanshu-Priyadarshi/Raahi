@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import {CaptainDataContext} from '../context/CaptainContext';
+import CaptainLogo from '../logos/captain_logo.jpg';
 
 const CaptainDetails = () =>
 {
@@ -40,7 +41,7 @@ const CaptainDetails = () =>
           <div className="flex items-center justify-start gap-3">
             <img
               className="h-14 w-14 rounded-full object-cover border border-gray-200"
-              src={captain?.avatar || 'https://i.pravatar.cc/80?img=12'}
+              src={captain?.avatar || CaptainLogo}
               alt="Captain"
             />
             <h4 className="text-lg font-medium capitalize">{captain.fullname.firstname + " " + captain.fullname.lastname}</h4>

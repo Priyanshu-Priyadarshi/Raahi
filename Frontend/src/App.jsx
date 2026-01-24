@@ -17,6 +17,10 @@ import CaptainRiding from "./pages/CaptainRiding.jsx";
 
 import RideReceipt from "./components/RideReceipt.jsx";
 import CaptainReceipt from "./components/CaptainReceipt.jsx";
+import CaptainContactUs from "./components/navigationbar/Captain/CaptainContactUs";
+import CaptainProfile from "./components/navigationbar/Captain/CaptainProfile";
+import UserProfile from "./components/navigationbar/User/UserProfile";
+import ContactUs from "./components/navigationbar/User/ContactUs";
 
 const App = () => {
   return (
@@ -52,6 +56,29 @@ const App = () => {
           <CaptainProtectWrapper>
             <CaptainLogout />
           </CaptainProtectWrapper>
+        } />
+
+        <Route path='/captain-contact-us' element={
+          <CaptainProtectWrapper>
+            <CaptainContactUs />
+          </CaptainProtectWrapper>
+        } />
+
+        <Route path='/captain/profile' element={
+          <CaptainProtectWrapper>
+            <CaptainProfile />
+          </CaptainProtectWrapper>
+        } />
+
+        <Route path='/user/profile' element={
+          <UserProtectWrapper>
+            <UserProfile />
+          </UserProtectWrapper>
+        } />
+        <Route path='/user/contact-us' element={
+          <UserProtectWrapper>
+            <ContactUs />
+          </UserProtectWrapper>
         } />
 
       </Routes>

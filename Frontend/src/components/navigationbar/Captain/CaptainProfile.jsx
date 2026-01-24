@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { CaptainDataContext } from "../../../context/CaptainContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import CaptainLogo from '../../../logos/captain_logo.jpg';
 
 const CaptainProfile = () => {
   const { captain, setCaptain } = useContext(CaptainDataContext);
@@ -59,7 +60,7 @@ const CaptainProfile = () => {
           <h1 className="text-3xl sm:text-4xl font-extrabold mb-4 sm:mb-6 text-blue-800 tracking-tight drop-shadow">Captain Profile</h1>
           <div className="transition-transform duration-200 hover:scale-105 hover:shadow-xl rounded-full border-4 border-blue-200 bg-gradient-to-tr from-blue-100 to-purple-100 p-1">
             <img
-              src={captain?.avatar || "https://i.pravatar.cc/120?img=13"}
+              src={captain?.avatar || CaptainLogo}
               alt="Profile"
               className="w-24 h-24 rounded-full object-cover shadow-md"
             />
