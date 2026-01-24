@@ -36,8 +36,6 @@
 - <b>Other:</b> Axios, JWT, bcrypt, dotenv
 
 ## 📁 Project Structure
-<details>
-<summary>📂 <b>Click to expand</b></summary>
 
 ```
 Uber/
@@ -65,12 +63,10 @@ Uber/
 ├── README.md
 └── ...
 ```
-</details>
 
 ## 🚀 Getting Started
 
-<details>
-<summary>📝 <b>Step-by-step Setup</b></summary>
+## 📝 Step-by-step Setup
 
 ### Prerequisites
 - Node.js (v16+ recommended)
@@ -115,7 +111,6 @@ Start the frontend:
 ```bash
 npm run dev
 ```
-</details>
 
 ## ⚙️ Environment Variables
 See above for required `.env` variables for both backend and frontend.
@@ -127,18 +122,14 @@ See above for required `.env` variables for both backend and frontend.
 
 ## 🧭 Key Functionality
 
-<details>
-<summary>👤 <b>User Flow</b></summary>
+## 👤 User Flow
 
 - Register/login
 - Request a ride
 - Track ride in real-time
 - View ride receipt
 
-</details>
-
-<details>
-<summary>🚕 <b>Captain Flow</b></summary>
+## 🚕 Captain Flow
 
 - Register/login
 - Accept rides
@@ -146,14 +137,9 @@ See above for required `.env` variables for both backend and frontend.
 - Finish ride
 - View earnings
 
-</details>
-
-<details>
-<summary>🔄 <b>Real-Time</b></summary>
+## 🔄 Real-Time
 
 - Socket.io for live ride status and location updates
-
-</details>
 
 ## 🎨 Customization
 - Update branding/logos in `Frontend/src/logos/`
@@ -197,6 +183,6 @@ See above for required `.env` variables for both backend and frontend.
 ---
 
 <div align="center">
-  <b>Made with Priyanshu Priyadarshi</b>
+  <b>Made by Priyanshu Priyadarshi</b>
 </div>
 
