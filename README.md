@@ -3,12 +3,12 @@
   <h1>Raahi 🚕</h1>
   <p><b>Modern, full-stack ride-hailing app with real-time tracking and dual user/captain flows.</b></p>
   <p>
-    <img src="https://img.shields.io/badge/React-18-blue?logo=react"/>
-    <img src="https://img.shields.io/badge/Node.js-18-green?logo=node.js"/>
-    <img src="https://img.shields.io/badge/Express.js-5.1.0-black?logo=express"/>
-    <img src="https://img.shields.io/badge/MongoDB-6.0-green?logo=mongodb"/>
-    <img src="https://img.shields.io/badge/Socket.io-4.8.1-black?logo=socket.io"/>
-    <img src="https://img.shields.io/badge/TailwindCSS-3-blue?logo=tailwindcss"/>
+    <a href="https://react.dev/" target="_blank"><img src="https://img.shields.io/badge/React-18-blue?logo=react"/></a>
+    <a href="https://nodejs.org/" target="_blank"><img src="https://img.shields.io/badge/Node.js-18-green?logo=node.js"/></a>
+    <a href="https://expressjs.com/" target="_blank"><img src="https://img.shields.io/badge/Express.js-5.1.0-black?logo=express"/></a>
+    <a href="https://www.mongodb.com/" target="_blank"><img src="https://img.shields.io/badge/MongoDB-6.0-green?logo=mongodb"/></a>
+    <a href="https://socket.io/" target="_blank"><img src="https://img.shields.io/badge/Socket.io-4.8.1-black?logo=socket.io"/></a>
+    <a href="https://tailwindcss.com/" target="_blank"><img src="https://img.shields.io/badge/TailwindCSS-3-blue?logo=tailwindcss"/></a>
   </p>
 
 </div>
@@ -22,22 +22,22 @@
 ---
 
 ## ✨ Features
-- Dual flows: User (rider) & Captain (driver)
-- Authentication & protected routes
-- Real-time ride requests, acceptance, and live tracking (Socket.io)
-- Ride status management (waiting, riding, finished)
-- Profile management for both users and captains
-- Receipts and ride history
-- Modern, responsive UI (Tailwind CSS)
+- 🔐 Dual flows: User (rider) & Captain (driver)
+- 🔑 Authentication & protected routes
+- 🚗 Real-time ride requests, acceptance, and live tracking (Socket.io)
+- 🏁 Ride status management (waiting, riding, finished)
+- 👤 Profile management for both users and captains
+- 🧾 Receipts and ride history
+- 🎨 Modern, responsive UI (Tailwind CSS)
 
 ## 🛠️ Tech Stack
-- **Frontend:** React 18, Vite, Tailwind CSS
-- **Backend:** Node.js 18, Express.js 5, MongoDB (Mongoose), Socket.io
-- **Other:** Axios, JWT, bcrypt, dotenv
+- <b>Frontend:</b> React 18, Vite, Tailwind CSS
+- <b>Backend:</b> Node.js 18, Express.js 5, MongoDB (Mongoose), Socket.io
+- <b>Other:</b> Axios, JWT, bcrypt, dotenv
 
 ## 📁 Project Structure
 <details>
-<summary>Click to expand</summary>
+<summary>📂 <b>Click to expand</b></summary>
 
 ```
 Uber/
@@ -68,6 +68,9 @@ Uber/
 </details>
 
 ## 🚀 Getting Started
+
+<details>
+<summary>📝 <b>Step-by-step Setup</b></summary>
 
 ### Prerequisites
 - Node.js (v16+ recommended)
@@ -105,13 +108,14 @@ npm install
 Create a `.env` file in `Frontend/`:
 ```env
 VITE_BASE_URL=http://localhost:4000
-VITE_GOOGLE_MAPS_API_KEY:your_GOOGLE_MAPS_API_KEY
-VITE_CONTACT_EMAIL
+VITE_GOOGLE_MAPS_API_KEY=your_GOOGLE_MAPS_API_KEY
+VITE_CONTACT_EMAIL=email_id
 ```
 Start the frontend:
 ```bash
 npm run dev
 ```
+</details>
 
 ## ⚙️ Environment Variables
 See above for required `.env` variables for both backend and frontend.
@@ -123,21 +127,33 @@ See above for required `.env` variables for both backend and frontend.
 
 ## 🧭 Key Functionality
 
-### User Flow
+<details>
+<summary>👤 <b>User Flow</b></summary>
+
 - Register/login
 - Request a ride
 - Track ride in real-time
 - View ride receipt
 
-### Captain Flow
+</details>
+
+<details>
+<summary>🚕 <b>Captain Flow</b></summary>
+
 - Register/login
 - Accept rides
 - Live tracking
 - Finish ride
 - View earnings
 
-### Real-Time
+</details>
+
+<details>
+<summary>🔄 <b>Real-Time</b></summary>
+
 - Socket.io for live ride status and location updates
+
+</details>
 
 ## 🎨 Customization
 - Update branding/logos in `Frontend/src/logos/`
